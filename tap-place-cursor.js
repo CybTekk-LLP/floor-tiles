@@ -53,7 +53,7 @@ const tapPlaceCursorComponent = {
       const [intersect] = intersects;
       this.cursorLocation = intersect.point;
     }
-    this.el.object3D.position.y = 0.1;
+    this.el.object3D.position.y = 0.01;
     this.el.object3D.position.lerp(this.cursorLocation, 0.4);
     this.el.object3D.rotation.y = this.threeCamera.rotation.y;
   },
