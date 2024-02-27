@@ -34,7 +34,7 @@ const tapPlaceCursorComponent = {
         newElement.setAttribute("visible", "true");
         newElement.setAttribute("animation", {
           property: "scale",
-          to: "10 10 10",
+          to: "2 2 2",
           easing: "easeOutElastic",
           dur: 800,
         });
