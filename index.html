@@ -13,71 +13,51 @@
 </head>
 
 <body>
-    <a-scene landing-page xrextras-loading xrextras-runtime-error xrweb>
+    <a-scene xrextras-gesture-detector landing-page xrextras-loading xrextras-runtime-error
+        renderer="colorManagement: true" xrweb>
+
+        <a-assets>
+            <a-asset-item id="tile" src="/TileWhite.glb"></a-asset-item>
+            <a-asset-item id="tile-transparent" src="/TileWhite.glb"></a-asset-item>
+            <img id="icon" src="/rectangle-icon.png">
+        </a-assets>
+
         <!-- The raycaster will emit mouse events on scene objects specified with the cantap class -->
-        <a-camera id="camera" position="0 8 0" raycaster="objects: .cantap"
-            cursor="fuse: false; rayOrigin: mouse;"></a-camera>
+        <a-camera id="camera" position="0 8 0" cursor="fuse: false; rayOrigin: mouse;">
+        </a-camera>
 
-        <a-entity light="type: directional; intensity: 0.8; castShadow: true;
-                shadowMapHeight:2048; shadowMapWidth:2048; shadowCameraTop: 20;
-                shadowCameraBottom: -20; shadowCameraRight: 20; shadowCameraLeft: -20;
-                target: #camera" xrextras-attach="target: camera; offset: 8 15 4" position="1 4.3 2.5"
-            shadow></a-entity>
+        <a-entity id="cursor" tap-place-cursor gltf-model="#tile-transparent" scale="2 2 2" reflections="type: static">
+            <a-plane rotation="-90 0 0" scale="1.6 3.3 1"
+                material="src: #icon; opacity: 0.5; roughness: 0.8; metalness: 0;">
+            </a-plane>
+        </a-entity>
 
-        <a-light type="ambient" intensity="1"></a-light>
+        <a-entity light="
+        type: directional;
+        intensity: 0.8;
+        castShadow: true;
+        shadowMapHeight:2048;
+        shadowMapWidth:2048;
+        shadowCameraTop: 20;
+        shadowCameraBottom: -20;
+        shadowCameraRight: 20;
+        shadowCameraLeft: -20;
+        target: #model" xrextras-attach="target: model; offset: 8 15 4" position="1 4.3 2.5" shadow>
+        </a-entity>
+
+        <a-light type="ambient" intensity="0.5"></a-light>
+
+        <a-entity id="model" gltf-model="#tile" scale="2 2 2" visible="false" shadow="receive: false" xrextras-hold-drag
+            xrextras-two-finger-rotate xrextras-pinch-scale reflections="type: realtime">
+        </a-entity>
 
         <!-- Adding the cantap class allows the ground to be clicked -->
-        <a-box id="floor" class="cantap" scale="1000 2 1000" position="0 -1 0"
-            material="shader: shadow; transparent: true; opacity: 0.4" shadow></a-box>
+        <a-box id="ground" scale="1000 2 1000" position="0 -1 0"
+            material="shader: shadow; transparent: true; opacity: 0.4" shadow>
+        </a-box>
     </a-scene>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Component that places tiles where the floor is clicked
-            AFRAME.registerComponent('tap-place', {
-                init() {
-                    const floor = document.getElementById('floor');
-                    if (floor) {
-                        floor.addEventListener('click', (event) => {
-                            // Get the size of the detected slab
-                            const slabSize = floor.getAttribute('scale');
-                            const slabWidth = parseFloat(slabSize.x);
-                            const slabDepth = parseFloat(slabSize.z);
-
-                            // Calculate total area of the slab
-                            const totalArea = slabWidth * slabDepth;
-
-                            // Calculate number of tiles needed to cover the slab
-                            const tileSize = 1; // Size of each tile (assuming 1 unit)
-                            const numTilesWidth = Math.ceil(slabWidth / tileSize);
-                            const numTilesDepth = Math.ceil(slabDepth / tileSize);
-                            const totalTiles = numTilesWidth * numTilesDepth;
-
-                            // Create and position tiles
-                            for (let i = 0; i < totalTiles; i++) {
-                                const rowIndex = Math.floor(i / numTilesWidth);
-                                const colIndex = i % numTilesWidth;
-
-                                const posX = (colIndex * tileSize) - (slabWidth / 2) + (tileSize / 2);
-                                const posZ = (rowIndex * tileSize) - (slabDepth / 2) + (tileSize / 2);
-
-                                const newElement = document.createElement('a-box');
-                                newElement.setAttribute('class', 'tile');
-                                newElement.setAttribute('position', `${posX} 0 ${posZ}`);
-                                newElement.setAttribute('rotation', '0 0 0');
-                                newElement.setAttribute('visible', 'true');
-                                newElement.setAttribute('scale', '1 1 1');
-                                newElement.setAttribute('geometry', `primitive: box; width: ${tileSize}; height: 0.1; depth: ${tileSize}`);
-                                newElement.setAttribute('material', `color: #fff; roughness: 1; metalness: 0`);
-
-                                this.el.sceneEl.appendChild(newElement);
-                            }
-                        });
-                    }
-                }
-            });
-        });
-    </script>
+    <script src="./tap-place-cursor.js"></script>
 </body>
 
 </html>

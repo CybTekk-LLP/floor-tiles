@@ -4,6 +4,10 @@ const tapPlaceCursorComponent = {
     this.camera = document.getElementById("camera");
     this.threeCamera = this.camera.getObject3D("camera");
     this.ground = document.getElementById("ground");
+    this.cursor = document.getElementById("cursor");
+    this.model = document.getElementById("model");
+
+    let hasPlacedModel = false;
 
     // 2D coordinates of the raycast origin, in normalized device coordinates (NDC)---X and Y
     // components should be between -1 and 1.  Here we want the cursor in the center of the screen.
@@ -12,33 +16,18 @@ const tapPlaceCursorComponent = {
     this.cursorLocation = new THREE.Vector3(0, 0, 0);
 
     this.el.sceneEl.addEventListener("click", (event) => {
-      // Create new entity for the new object
-      const newElement = document.createElement("a-entity");
+      if (hasPlacedModel !== true) {
+        hasPlacedModel = true;
 
-      // Spawn model at location of the cursor
-      newElement.setAttribute("position", this.el.object3D.position);
+        this.model.setAttribute("position", this.el.object3D.position);
+        this.model.setAttribute("visible", "true");
 
-      const randomYRotation = Math.random() * 360;
-      newElement.setAttribute("rotation", `0 0 0`);
+        // Remove ghosted model from scene after model is placed
+        this.cursor.parentNode.removeChild(this.cursor);
 
-      newElement.setAttribute("visible", "false");
-      newElement.setAttribute("scale", "0.01 0.01 0.01");
-
-      newElement.setAttribute("gltf-model", "#tilesModel");
-      newElement.setAttribute("shadow", { receive: false });
-
-      this.el.sceneEl.appendChild(newElement);
-
-      newElement.addEventListener("model-loaded", () => {
-        // Once the model is loaded, we are ready to show it popping in using an animation
-        newElement.setAttribute("visible", "true");
-        newElement.setAttribute("animation", {
-          property: "scale",
-          to: "1 1 1",
-          easing: "easeOutElastic",
-          dur: 800,
-        });
-      });
+        // Add raycaster to camera
+        this.camera.setAttribute("raycaster", "objects: .cantap");
+      }
     });
   },
   tick() {
@@ -53,10 +42,9 @@ const tapPlaceCursorComponent = {
       const [intersect] = intersects;
       this.cursorLocation = intersect.point;
     }
-    this.el.object3D.position.y = 0.01;
+    this.el.object3D.position.y = 0.1;
     this.el.object3D.position.lerp(this.cursorLocation, 0.4);
     this.el.object3D.rotation.y = this.threeCamera.rotation.y;
   },
 };
-
 AFRAME.registerComponent("tap-place-cursor", tapPlaceCursorComponent);
