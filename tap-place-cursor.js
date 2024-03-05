@@ -20,7 +20,6 @@ const tapPlaceCursorComponent = {
         hasPlacedModel = true;
 
         this.model.setAttribute("position", this.el.object3D.position);
-        this.model.setAttribute("rotation", "0 45 0");
         this.model.setAttribute("visible", "true");
 
         // Remove ghosted model from scene after model is placed
