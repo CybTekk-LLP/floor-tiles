@@ -19,7 +19,7 @@
         <a-assets>
             <a-asset-item id="tile" src="./TileWhite.glb"></a-asset-item>
             <a-asset-item id="tile-transparent" src="./transparent.glb"></a-asset-item>
-            <img id="icon" src="./rectangle-icon.png">
+            <!-- <img id="icon" src="./rectangle-icon.png"> -->
         </a-assets>
 
         <!-- The raycaster will emit mouse events on scene objects specified with the cantap class -->
@@ -27,9 +27,9 @@
         </a-camera>
 
         <a-entity id="cursor" tap-place-cursor gltf-model="#tile-transparent" scale="2 2 2" reflections="type: static">
-            <a-plane rotation="-90 0 0" scale="1.6 3.3 1"
+            <!-- <a-plane rotation="-90 0 0" scale="1.6 3.3 1"
                 material="src: #icon; opacity: 0.5; roughness: 0.8; metalness: 0;">
-            </a-plane>
+            </a-plane> -->
         </a-entity>
 
         <a-entity light="
@@ -42,7 +42,7 @@
         shadowCameraBottom: -20;
         shadowCameraRight: 20;
         shadowCameraLeft: -20;
-        target: #model" xrextras-attach="target: model; offset: 8 15 4" position="1 4.3 2.5" shadow>
+        target: #model" xrextras-attach="target: model; offset: 8 15 4" position="1 4.3 2.5">
         </a-entity>
 
         <a-light type="ambient" intensity="0.5"></a-light>
