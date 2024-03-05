@@ -23,7 +23,7 @@ const tapPlaceCursorComponent = {
       this.model.setAttribute("visible", "true");
 
       // Remove ghosted model from scene after model is placed
-      this.cursor.parentNode.removeChild(this.cursor);
+      // this.cursor.parentNode.removeChild(this.cursor);
 
       // Add raycaster to camera
       this.camera.setAttribute("raycaster", "objects: .cantap");
