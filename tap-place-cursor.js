@@ -7,7 +7,7 @@ const tapPlaceCursorComponent = {
     this.cursor = document.getElementById("cursor");
     this.model = document.getElementById("model");
 
-    // let hasPlacedModel = false;
+    let hasPlacedModel = false;
 
     // 2D coordinates of the raycast origin, in normalized device coordinates (NDC)---X and Y
     // components should be between -1 and 1.  Here we want the cursor in the center of the screen.
@@ -16,18 +16,18 @@ const tapPlaceCursorComponent = {
     this.cursorLocation = new THREE.Vector3(0, 0, 0);
 
     this.el.sceneEl.addEventListener("click", (event) => {
-      // if (hasPlacedModel !== true) {
-      // hasPlacedModel = true;
+      if (hasPlacedModel !== true) {
+        hasPlacedModel = true;
 
-      this.model.setAttribute("position", this.el.object3D.position);
-      this.model.setAttribute("visible", "true");
+        this.model.setAttribute("position", this.el.object3D.position);
+        this.model.setAttribute("visible", "true");
 
-      // Remove ghosted model from scene after model is placed
-      // this.cursor.parentNode.removeChild(this.cursor);
+        // Remove ghosted model from scene after model is placed
+        this.cursor.parentNode.removeChild(this.cursor);
 
-      // Add raycaster to camera
-      this.camera.setAttribute("raycaster", "objects: .cantap");
-      // }
+        // Add raycaster to camera
+        this.camera.setAttribute("raycaster", "objects: .cantap");
+      }
     });
   },
   tick() {
