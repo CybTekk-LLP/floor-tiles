@@ -17,6 +17,7 @@
         renderer="colorManagement: true" xrweb>
 
         <a-assets>
+            <img id="texture" src="./a.webp">
             <a-asset-item id="tile-transparent" src="./transparent.glb"></a-asset-item>
         </a-assets>
 
@@ -45,7 +46,7 @@
 
         <a-box id="model" scale="10 0.1 10" visible="false" shadow="receive: false" xrextras-hold-drag
             xrextras-two-finger-rotate xrextras-pinch-scale reflections="type: realtime" rotation="0 0 0"
-            position="0 0 0" material="src: url(./a.webp)">
+            position="0 0 0" material="src: #texture">
         </a-box>
 
 
